@@ -47,4 +47,4 @@ jobs:
         USERNAME: ${{ github.actor }}
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
     # there is task Run chmod to make gradlew executable but manually see below
-    # git update-index --chmod=+x gradlew
+    # git update-index --chmod=+x gradlew - done
