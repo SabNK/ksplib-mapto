@@ -20,13 +20,13 @@ class BuildProcessorTest {
     @Test
     fun `mapper should generate file`() {
         //val m = IMapper<String, String>
-        val kotlinSource = SourceFile.kotlin(
+        val userDTOSource = SourceFile.kotlin(
             "UserDTO.kt", """        
             package ru.polescanner.ksp
 
-            import ru.polescanner.ksp.domain.Author
-            import ru.polescanner.ksp.domain.IMapper
-            import ru.polescanner.ksp.domain.User            
+            import com.example.app.domain.Author
+            import com.example.app.domain.IMapper
+            import com.example.app.domain.User            
             import java.util.*
 
             data class UserDTO(val id: String, val author: AuthorDTO) {
@@ -46,18 +46,35 @@ class BuildProcessorTest {
                 }
             }
 
+        """
+        )
+        val bookDTOSource = SourceFile.kotlin(
+            "BookDTO.kt", """        
+            package ru.polescanner.books
+
+            import com.example.app.domain.books.Book
+            import com.example.app.domain.IMapper
+            import ru.polescanner.ksp.MapTo
+
+            data class BookDTO(val isbn: String, val name: String, val pages: Int) {
+                @MapTo object Mapper: IMapper<Book, BookDTO> {
+                    override fun mapTo(i: Book) = BookDTO(i.isbn, i.name, i.pages)
+
+                    override fun mapFrom(o: BookDTO) = Book(o.isbn, o.name, o.pages)
+                }                
+            }
+
     """
         )
-
-        val compilationResult = compile(kotlinSource)
+        val compilationResult = compile(userDTOSource, bookDTOSource)
 
         assertEquals(KotlinCompilation.ExitCode.OK, compilationResult.exitCode)
         assertSourceEquals(
             """                              
                 package ru.polescanner.ksp
 
-                import ru.polescanner.ksp.domain.Author
-                import ru.polescanner.ksp.domain.User
+                import com.example.app.domain.Author
+                import com.example.app.domain.User
 
                 public fun User.toDTO(): UserDTO = ru.polescanner.ksp.UserDTO.Mapper.mapTo(this)
                 
@@ -71,6 +88,18 @@ class BuildProcessorTest {
                 """,
             compilationResult.sourceFor("UserDTOExt.kt")
         )
+        assertSourceEquals(
+            """                              
+                package ru.polescanner.books
+
+                import com.example.app.domain.books.Book
+
+                public fun Book.toDTO(): BookDTO = ru.polescanner.books.BookDTO.Mapper.mapTo(this)
+                
+                public fun BookDTO.toDomain(): Book = ru.polescanner.books.BookDTO.Mapper.mapFrom(this)
+                """,
+            compilationResult.sourceFor("BookDTOExt.kt")
+        )
     }
 
     private fun compile(vararg source: SourceFile) = KotlinCompilation().apply {
@@ -78,7 +107,7 @@ class BuildProcessorTest {
         symbolProcessorProviders = listOf(BuildProcessorProvider())
         workingDir = temporaryFolder.root
         inheritClassPath = true
-        verbose = false
+        verbose = true
     }.compile()
 
 

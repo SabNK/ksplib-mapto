@@ -1,4 +1,4 @@
-package ru.polescanner.ksp.domain
+package com.example.app.domain
 
 import java.util.*
 

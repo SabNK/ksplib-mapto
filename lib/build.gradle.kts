@@ -15,7 +15,7 @@ plugins {
 
 }
 group = "ru.polescanner.ksp"
-version = "0.0.4"
+version = "0.0.5"
 
 
 publishing {
@@ -63,8 +63,9 @@ dependencies {
     //implementation(libs.guava)
 
     //implementation(project(":annotation"))
-    api("com.google.devtools.ksp:symbol-processing-api:1.8.0-1.0.9")
+    //api("com.google.devtools.ksp:symbol-processing-api:1.8.0-1.0.9")
             //1.9.21-1.0.15")
+    implementation ("com.google.devtools.ksp:symbol-processing-api:1.8.0-1.0.9")
     implementation ("com.squareup:kotlinpoet:1.16.0")
     implementation ("com.squareup:kotlinpoet-ksp:1.16.0")
 
