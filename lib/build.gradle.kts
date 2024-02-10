@@ -17,6 +17,7 @@ plugins {
 group = "ru.polescanner.ksp"
 version = "0.0.1"
 
+
 publishing {
     repositories {
         maven {
@@ -83,4 +84,9 @@ java {
 /*tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}*/
+
+/*
+tasks.withType(Publishing).configureEach { t ->
+    t.mustRunAfter(provider { project(":annotation").tasks.withType(PublishToMavenRepository) })
 }*/
