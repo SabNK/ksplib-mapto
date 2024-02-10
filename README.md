@@ -80,7 +80,7 @@ Get fun name by comparing two classes say User and UserDTO = toDTO, Author and A
 
 ## Installation <img src="https://i.imgur.com/iV36acM.png" width="23">
 
-The package is available on Maven Central.
+The package is not available on Maven Central, only on Github Packages. So below is not working in the moment!
 
 Add dependency to your module's `build.gradle` file:
 
