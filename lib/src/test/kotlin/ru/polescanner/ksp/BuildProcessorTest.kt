@@ -32,9 +32,9 @@ class BuildProcessorTest {
             data class UserDTO(val id: String, val author: AuthorDTO) {
                 @MapTo
                 object Mapper: IMapper<User, UserDTO> {
-                    override fun mapTo(i: User) = UserDTO(i.id.toString(), i.author.toDTO1())
+                    override fun mapTo(i: User) = UserDTO(i.id.toString(), i.author.toDTO())
 
-                    override fun mapFrom(o: UserDTO) = User(UUID.fromString(o.id), o.author.toDomain1())
+                    override fun mapFrom(o: UserDTO) = User(UUID.fromString(o.id), o.author.toDomain())
                 }
                 data class AuthorDTO(val id: String, val name: String, val surname: String) {
                     @MapTo
