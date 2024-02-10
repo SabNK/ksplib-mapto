@@ -1,10 +1,6 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Kotlin_Icon.svg/512px-Kotlin_Icon.svg.png" align="right" title="Kotlin Logo" width="120" alt="Kotlin Logo">
 
 # MapTo KSP Library
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.tschuchortdev/kotlin-compile-testing/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.tschuchortdev/kotlin-compile-testing)
-![GitHub](https://img.shields.io/github/license/SabNK/ksplib-mapto.svg?color=green&style=popout)
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-green.svg)](https://shields.io/)
-[![Build Status](https://github.com/tschuchortdev/kotlin-compile-testing/workflows/Continuous%20Integration/badge.svg)](https://github.com/tschuchortdev/kotlin-compile-testing/actions)
 
 A library for generating boilerplate code with Mapper to different projection. 
 Supports nested Domain primitives with their own Mappers

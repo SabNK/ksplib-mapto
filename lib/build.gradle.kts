@@ -15,7 +15,7 @@ plugins {
 
 }
 group = "ru.polescanner.ksp"
-version = "0.0.3"
+version = "0.0.4"
 
 
 publishing {
