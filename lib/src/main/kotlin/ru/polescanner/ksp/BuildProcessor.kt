@@ -23,11 +23,14 @@ class BuildProcessor(
     override fun process(resolver: Resolver): List<KSAnnotated> {
         val symbols = resolver.getSymbols(MapTo::class)
         val s = symbols.toList().size
-        //throw IllegalArgumentException("size  = ${symbols.toList().size}")
+        logger.info("resolved $s @MapTo cases")
+
+
         val fileSpecMap = emptyMap<Pair<String, String>, FileSpec.Builder>().toMutableMap()
 
         val t = symbols.filter { it.validate() }
         val ss = t.toList().size
+        logger.info("validated $ss resolved @MapTo cases")
         t.forEach { it.accept(VisitorMapper(fileSpecMap), Unit) }
         fileSpecMap.forEach{it.value.build().writeTo(codeGenerator = codeGenerator, aggregating = false)}
         return symbols.filterNot { it.validate() }.toList()
@@ -62,6 +65,7 @@ class BuildProcessor(
             val projection = iMapper.arguments[1].toTypeName(TypeParameterResolver.EMPTY)
 
             val fileName = projection.toString().removePackageName(packageName).substringBefore('.') + "Ext"
+            logger.info("prepare generating package: $packageName file: $fileName", classDeclaration)
 
             val builder = fileSpecMap[packageName to fileName]?: FileSpec.builder(packageName, fileName)
             fileSpecMap[packageName to fileName] = genFile(builder, domain, projection)
@@ -71,6 +75,32 @@ class BuildProcessor(
 
 
     }
+    private fun genFile(builder: FileSpec.Builder,
+                        domain: TypeName,
+                        projection: TypeName): FileSpec.Builder {
+        val mapFrom = "Domain"
+        val simpleDomain = domain.toString().reversed().substringBefore('.').reversed()
+        logger.info("domain simple: $simpleDomain type: $domain")
+        val simpleProjection = projection.toString().reversed().substringBefore('.').reversed()
+        logger.info("projection simple: $simpleProjection type: $projection")
+        val mapTo: String = simpleProjection.substringAfter(simpleDomain)
+
+        return builder
+            .addFunction(
+                FunSpec.builder("to$mapTo")
+                    .receiver(domain)
+                    .returns(projection)
+                    .addStatement("return ${projection}.Mapper.mapTo(this)")
+                    .build()
+            )
+            .addFunction(
+                FunSpec.builder("to$mapFrom")
+                    .receiver(projection)
+                    .returns(domain)
+                    .addStatement("return ${projection}.Mapper.mapFrom(this)")
+                    .build()
+            )
+    }
 
 }
 
@@ -79,28 +109,5 @@ fun Resolver.getSymbols(cls: KClass<*>) =
     this.getSymbolsWithAnnotation(cls.qualifiedName!!)
         .filterIsInstance<KSClassDeclaration>()
 
-private fun genFile(builder: FileSpec.Builder,
-                    domain: TypeName,
-                    projection: TypeName): FileSpec.Builder {
-    val mapFrom = "Domain"
-    val simpleDomain = domain.toString().reversed().substringBefore('.').reversed()
-    val simpleProjection = projection.toString().reversed().substringBefore('.').reversed()
-    val mapTo: String = simpleProjection.substringAfter(simpleDomain)
 
-    return builder
-        .addFunction(
-            FunSpec.builder("to$mapTo")
-                .receiver(domain)
-                .returns(projection)
-                .addStatement("return ${projection}.Mapper.mapTo(this)")
-                .build()
-        )
-        .addFunction(
-            FunSpec.builder("to$mapFrom")
-                .receiver(projection)
-                .returns(domain)
-                .addStatement("return ${projection}.Mapper.mapFrom(this)")
-                .build()
-        )
-}
 private fun String.removePackageName(packageName: String) = substringAfter(packageName + '.')

@@ -62,7 +62,7 @@ dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     //implementation(libs.guava)
 
-    implementation(project(":annotation"))
+    //implementation(project(":annotation"))
     api("com.google.devtools.ksp:symbol-processing-api:1.8.0-1.0.9")
             //1.9.21-1.0.15")
     implementation ("com.squareup:kotlinpoet:1.16.0")
