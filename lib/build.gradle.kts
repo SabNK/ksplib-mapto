@@ -11,9 +11,31 @@ plugins {
 
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
+    id("maven-publish")
+
+}
+group = "ru.polescanner.ksp"
+version = "0.0-SNAPSHOT"
+
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/SabNK/ksplib-mapto")
+            credentials {
+                username = System.getenv("USERNAME")
+                password = System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("Ksplib-Mapto-Lib") {
+            from(components["java"])
+        }
+    }
 }
 
-version = "0.0-SNAPSHOT"
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
