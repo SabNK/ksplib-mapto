@@ -11,4 +11,6 @@ plugins {
 }
 
 rootProject.name = "ksplib-mapto"
+
 include("lib")
+include("annotation")

@@ -8,7 +8,6 @@ import org.intellij.lang.annotations.Language
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
-import ru.polescanner.ksp.domain.IMapper
 import java.io.File
 
 
@@ -19,7 +18,7 @@ class BuildProcessorTest {
     var temporaryFolder: TemporaryFolder = TemporaryFolder()
 
     @Test
-    fun `mapper`() {
+    fun `mapper should generate file`() {
         //val m = IMapper<String, String>
         val kotlinSource = SourceFile.kotlin(
             "UserDTO.kt", """        

@@ -7,15 +7,15 @@
 
 plugins {
     // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
-    alias(libs.plugins.jvm)
-
+    //alias(libs.plugins.jvm)
+    kotlin("jvm") version "1.8.0"
     // Apply the java-library plugin for API and implementation separation.
     `java-library`
     id("maven-publish")
 
 }
 group = "ru.polescanner.ksp"
-version = "0.0-SNAPSHOT"
+version = "0.0.1"
 
 publishing {
     repositories {
@@ -61,7 +61,9 @@ dependencies {
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     //implementation(libs.guava)
 
-    implementation("com.google.devtools.ksp:symbol-processing-api:1.9.21-1.0.15")
+    implementation(project(":annotation"))
+    api("com.google.devtools.ksp:symbol-processing-api:1.8.0-1.0.9")
+            //1.9.21-1.0.15")
     implementation ("com.squareup:kotlinpoet:1.16.0")
     implementation ("com.squareup:kotlinpoet-ksp:1.16.0")
 
