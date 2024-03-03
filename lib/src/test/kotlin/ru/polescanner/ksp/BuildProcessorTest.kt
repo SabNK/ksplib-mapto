@@ -82,16 +82,13 @@ class BuildProcessorTest {
                 
                 public fun UserDTO.toDomain(): User = ru.polescanner.ksp.UserDTO.Mapper.mapFrom(this)
 
-                public fun List<User>.toDTO(): List<UserDTO> =
-                    kotlin.collections.List<com.example.app.domain.User>.map{ it.toDTO() }
+                public fun List<User>.toDTO(): List<UserDTO> = this.map{ it.toDTO() }
 
-                public fun List<UserDTO>.toDomain(): List<User> = ru.polescanner.ksp.UserDTO.map{ it.toDomain() }
+                public fun List<UserDTO>.toDomain(): List<User> = this.map{ it.toDomain() }
 
-                public fun Array<User>.toDTO(): Array<UserDTO> =
-                    kotlin.collections.List<com.example.app.domain.User>.map{ it.toDTO() }.toTypedArray()
+                public fun Array<User>.toDTO(): Array<UserDTO> = this.map{ it.toDTO() }.toTypedArray()
                 
-                public fun Array<UserDTO>.toDomain(): Array<User> = ru.polescanner.ksp.UserDTO.map{ it.toDomain()
-                    }.toTypedArray()
+                public fun Array<UserDTO>.toDomain(): Array<User> = this.map{ it.toDomain() }.toTypedArray()
                 
                 public fun Author.toDTO(): UserDTO.AuthorDTO =
                     ru.polescanner.ksp.UserDTO.AuthorDTO.Mapper.mapTo(this)
@@ -99,17 +96,14 @@ class BuildProcessorTest {
                 public fun UserDTO.AuthorDTO.toDomain(): Author =
                     ru.polescanner.ksp.UserDTO.AuthorDTO.Mapper.mapFrom(this)
 
-                public fun List<Author>.toDTO(): List<UserDTO.AuthorDTO> =
-                    kotlin.collections.List<com.example.app.domain.Author>.map{ it.toDTO() }
+                public fun List<Author>.toDTO(): List<UserDTO.AuthorDTO> = this.map{ it.toDTO() }
                 
-                public fun List<UserDTO.AuthorDTO>.toDomain(): List<Author> =
-                    ru.polescanner.ksp.UserDTO.AuthorDTO.map{ it.toDomain() }
+                public fun List<UserDTO.AuthorDTO>.toDomain(): List<Author> = this.map{ it.toDomain() }
                 
-                public fun Array<Author>.toDTO(): Array<UserDTO.AuthorDTO> =
-                    kotlin.collections.List<com.example.app.domain.Author>.map{ it.toDTO() }.toTypedArray()
+                public fun Array<Author>.toDTO(): Array<UserDTO.AuthorDTO> = this.map{ it.toDTO() }.toTypedArray()
                 
-                public fun Array<UserDTO.AuthorDTO>.toDomain(): Array<Author> =
-                    ru.polescanner.ksp.UserDTO.AuthorDTO.map{ it.toDomain() }.toTypedArray()
+                public fun Array<UserDTO.AuthorDTO>.toDomain(): Array<Author> = this.map{ it.toDomain()
+                    }.toTypedArray()
                 """,
             compilationResult.sourceFor("UserDTOExt.kt")
         )
@@ -125,16 +119,13 @@ class BuildProcessorTest {
                 
                 public fun BookDTO.toDomain(): Book = ru.polescanner.books.BookDTO.Mapper.mapFrom(this)
                 
-                public fun List<Book>.toDTO(): List<BookDTO> =
-                    kotlin.collections.List<com.example.app.domain.books.Book>.map{ it.toDTO() }
+                public fun List<Book>.toDTO(): List<BookDTO> = this.map{ it.toDTO() }
 
-                public fun List<BookDTO>.toDomain(): List<Book> = ru.polescanner.books.BookDTO.map{ it.toDomain() }
+                public fun List<BookDTO>.toDomain(): List<Book> = this.map{ it.toDomain() }
                 
-                public fun Array<Book>.toDTO(): Array<BookDTO> =
-                    kotlin.collections.List<com.example.app.domain.books.Book>.map{ it.toDTO() }.toTypedArray()
+                public fun Array<Book>.toDTO(): Array<BookDTO> = this.map{ it.toDTO() }.toTypedArray()
                 
-                public fun Array<BookDTO>.toDomain(): Array<Book> = ru.polescanner.books.BookDTO.map{ it.toDomain()
-                    }.toTypedArray()
+                public fun Array<BookDTO>.toDomain(): Array<Book> = this.map{ it.toDomain() }.toTypedArray()
                 """,
             compilationResult.sourceFor("BookDTOExt.kt")
         )
