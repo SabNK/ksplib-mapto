@@ -6,8 +6,10 @@ import com.google.devtools.ksp.processing.Resolver
 import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.symbol.*
 import com.google.devtools.ksp.validate
+import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.plusParameter
 import com.squareup.kotlinpoet.TypeName
 import com.squareup.kotlinpoet.ksp.TypeParameterResolver
 import com.squareup.kotlinpoet.ksp.toTypeName
@@ -84,7 +86,14 @@ class BuildProcessor(
         val simpleProjection = projection.toString().reversed().substringBefore('.').reversed()
         logger.info("projection simple: $simpleProjection type: $projection")
         val mapTo: String = simpleProjection.substringAfter(simpleDomain)
-
+        val domainList = ClassName("kotlin.collections", "List")
+            .plusParameter(domain)
+        val projectionList = ClassName("kotlin.collections", "List")
+            .plusParameter(projection)
+        val domainArray = ClassName("kotlin", "Array")
+            .plusParameter(domain)
+        val projectionArray = ClassName("kotlin", "Array")
+            .plusParameter(projection)
         return builder
             .addFunction(
                 FunSpec.builder("to$mapTo")
@@ -100,6 +109,35 @@ class BuildProcessor(
                     .addStatement("return ${projection}.Mapper.mapFrom(this)")
                     .build()
             )
+            .addFunction(
+                FunSpec.builder("to$mapTo")
+                    .receiver(domainList)
+                    .returns(projectionList)
+                    .addStatement("return $domainList.map{ it.to$mapTo() }")
+                    .build()
+            )
+            .addFunction(
+                FunSpec.builder("to$mapFrom")
+                    .receiver(projectionList)
+                    .returns(domainList)
+                    .addStatement("return $projection.map{ it.to$mapFrom() }")
+                    .build()
+            )
+            .addFunction(
+                FunSpec.builder("to$mapTo")
+                    .receiver(domainArray)
+                    .returns(projectionArray)
+                    .addStatement("return $domainList.map{ it.to$mapTo() }.toTypedArray()")
+                    .build()
+            )
+            .addFunction(
+                FunSpec.builder("to$mapFrom")
+                    .receiver(projectionArray)
+                    .returns(domainArray)
+                    .addStatement("return $projection.map{ it.to$mapFrom() }.toTypedArray()")
+                    .build()
+            )
+
     }
 
 }
